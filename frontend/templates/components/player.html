@@ -1,0 +1,8 @@
+<div class="video-player" data-player>
+    <video id="{{ player_id }}" controls playsinline preload="metadata" aria-label="{{ label }}"{% if player_id == 'result-player' %} data-result-player{% endif %}>
+        <source src="{{ video_url }}" type="video/mp4">
+        Trình duyệt không hỗ trợ phát video. Bạn có thể tải tệp để xem trên thiết bị.
+    </video>
+    <div class="player-error" data-player-error hidden>{% include 'components/icon.html' with name='info' %}<p>Trình duyệt chưa phát được video này. Bạn có thể tải MP4 và mở bằng trình phát tương thích.</p><a href="{{ video_url }}" download class="text-link">Tải tệp video {% include 'components/icon.html' with name='download' %}</a></div>
+    <div class="player-toolbar"><button type="button" class="player-toggle" data-player-toggle aria-label="Phát {{ label }}">{% include 'components/icon.html' with name='play' %}<span>Phát</span></button><span data-player-metadata>Đang đọc thông tin video…</span>{% if download %}<a class="icon-button" href="{{ video_url }}" download aria-label="Tải {{ label }}">{% include 'components/icon.html' with name='download' %}</a>{% endif %}</div>
+</div>

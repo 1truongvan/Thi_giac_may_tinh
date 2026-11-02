@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_class %}home-page{% endblock %}
+{% block content %}
+<main id="main-content">
+    <section class="hero container">
+        <div class="hero-copy">
+            <span class="eyebrow pill"><span class="status-dot"></span> ÍT RUNG HƠN. TRỌN KHOẢNH KHẮC HƠN.</span>
+            <h1>Sửa Video Rung<span class="cyan">Giữ từng khoảnh khắc.</span></h1>
+            <p>Biến những thước phim rung lắc thành chuyển động mượt mà hơn. Tải video lên và để thuật toán ổn định hình ảnh xử lý phần còn lại.</p>
+            <a href="{% url 'workspace' %}" class="button button-primary">Bắt đầu {% include 'components/icon.html' with name='arrow' %}</a>
+            <div class="hero-note">{% include 'components/icon.html' with name='check' %} Không cần cài phần mềm chỉnh sửa video</div>
+        </div>
+        <div class="hero-demo">
+            <div class="demo-topline"><span class="tiny-dot"></span><span class="tiny-dot"></span><span class="tiny-dot"></span><span>ĐỂ CHUYỂN ĐỘNG KỂ CÂU CHUYỆN</span></div>
+            <div class="demo-pair">
+                <figure><div class="demo-image"><img src="{% static 'images/demo-before.jpg' %}" alt="Khung hình từ video gốc trong dữ liệu dự án" width="800" height="450"><span class="video-tag">TRƯỚC</span></div><figcaption><span class="signal signal-before">〰 〰 〰 〰 〰</span><span>Video gốc</span></figcaption></figure>
+                <figure><div class="demo-image"><img src="{% static 'images/demo-after.jpg' %}" alt="Khung hình sau khi xử lý bằng thuật toán ổn định hiện tại" width="800" height="450"><span class="video-tag tag-cyan">SAU</span></div><figcaption><span class="signal signal-after">― ﹏ ― ﹏ ―</span><span>Đã ổn định</span></figcaption></figure>
+            </div>
+            <p class="demo-caption">{% include 'components/icon.html' with name='video' %} Khung hình trước / sau từ video thật của dự án</p>
+        </div>
+    </section>
+
+    <section class="tech-strip container" aria-label="Công nghệ sử dụng"><p>Từ chuyển động thực tế đến những khung hình ổn định hơn.</p><div><span>OpenCV</span><span>Python</span><span>NumPy</span><span>SciPy</span><span>Django</span></div><span class="tech-strip-note">Ước lượng chuyển động · Làm mượt quỹ đạo · Tái tạo khung hình</span></section>
+
+    <section class="section container" id="how-it-works">
+        <div class="section-heading"><span class="eyebrow">ĐƠN GIẢN TỪ BƯỚC ĐẦU TIÊN</span><h2>Sửa các clip rung trong<br>3 bước dễ dàng</h2><p>Tập trung vào câu chuyện của bạn.<br>Chúng tôi giúp bạn làm mượt từng khung hình.</p></div>
+        <div class="steps-grid">
+            <article class="step-card"><div class="step-title"><span class="step-number">01</span><h3>Tải video của bạn</h3></div><p>Kéo thả hoặc chọn video từ thiết bị để bắt đầu.</p><div class="mini-dropzone">{% include 'components/icon.html' with name='upload' %}<span>Một video. Một khởi đầu mới.</span><span class="mini-button">Chọn video</span></div><span class="card-footnote">Tệp được xử lý trên máy chủ Django</span></article>
+            <article class="step-card"><div class="step-title"><span class="step-number">02</span><h3>Để chuyển động mượt hơn</h3></div><p>Thuật toán tự ước lượng chuyển động và làm mượt quỹ đạo.</p><div class="filmstrip" aria-hidden="true"><img src="{% static 'images/demo-before.jpg' %}" alt="" loading="lazy"><img src="{% static 'images/demo-before.jpg' %}" alt="" loading="lazy"><img src="{% static 'images/demo-after.jpg' %}" alt="" loading="lazy"><img src="{% static 'images/demo-after.jpg' %}" alt="" loading="lazy"></div><div class="process-line"><span></span><span></span><span></span><span></span><span></span></div><span class="card-footnote">ECC + Optical Flow · Gaussian smoothing</span></article>
+            <article class="step-card"><div class="step-title"><span class="step-number">03</span><h3>Xem lại &amp; tải xuống</h3></div><p>So sánh video gốc và kết quả, sau đó lưu tệp MP4.</p><div class="mini-result"><img src="{% static 'images/demo-after.jpg' %}" alt="Ví dụ khung hình đầu ra thực tế" loading="lazy"><span>{% include 'components/icon.html' with name='check' %} Video đã ổn định</span></div><span class="card-footnote">Kết quả và số liệu từ quá trình xử lý thực tế</span></article>
+        </div>
+    </section>
+
+    <section class="section container" id="features">
+        <div class="section-heading"><span class="eyebrow">ÍT RUNG LẮC. NHIỀU CẢM XÚC.</span><h2>Những thước phim cầm tay,<br>vững vàng hơn.</h2><p>Các công cụ thiết yếu, kết nối trong một quy trình.</p></div>
+        <div class="feature-grid">
+            <article class="feature-card feature-wide"><span class="feature-icon">{% include 'components/icon.html' with name='video' %}</span><h3>Nhìn rõ sự khác biệt</h3><p>Đặt video gốc cạnh video kết quả. Xem thêm bản so sánh ghép đôi để theo dõi cùng một chuyển động.</p><div class="feature-comparison"><figure><img src="{% static 'images/demo-before.jpg' %}" alt="Trước khi ổn định" loading="lazy"><figcaption>Nguyên bản</figcaption></figure><figure><img src="{% static 'images/demo-after.jpg' %}" alt="Sau khi ổn định" loading="lazy"><figcaption class="cyan">Đã ổn định</figcaption></figure></div></article>
+            <article class="feature-card"><span class="feature-icon">{% include 'components/icon.html' with name='sliders' %}</span><h3>Thích ứng với chuyển động</h3><p>Mức làm mượt và tỷ lệ cắt viền được thuật toán tự chọn dựa trên chuyển động của video.</p><div class="adaptive-visual" aria-hidden="true"><span>CHUYỂN ĐỘNG</span><div class="waveform">▂ ▆ ▃ █ ▄ ▇ ▂ ▅ ▃ ▆ ▂ ▄</div><span class="adaptive-divider">↓</span><div class="waveform smooth">▂ ▃ ▄ ▃ ▂ ▃ ▄ ▃ ▂ ▃ ▄ ▃</div><span>QUỸ ĐẠO ĐƯỢC LÀM MƯỢT</span></div></article>
+            <article class="feature-card"><span class="feature-icon">{% include 'components/icon.html' with name='chart' %}</span><h3>Đánh giá bằng số liệu</h3><p>Đo chuyển động trung bình và độ lệch chuẩn trước / sau. Hiển thị mức thay đổi đo được, kể cả khi kết quả chưa cải thiện.</p><div class="metric-labels"><span>MEAN</span><span>STD</span><span>TRƯỚC / SAU</span></div></article>
+            <article class="feature-card"><span class="feature-icon">{% include 'components/icon.html' with name='aperture' %}</span><h3>Chăm chút từng khung hình</h3><p>Ước lượng chuyển động, hiệu chỉnh vị trí và góc xoay, sau đó xử lý viền để tạo video đầu ra.</p><img class="feature-landscape" src="{% static 'images/demo-after.jpg' %}" alt="Khung hình sau xử lý viền" loading="lazy"></article>
+            <article class="feature-card"><span class="feature-icon">{% include 'components/icon.html' with name='download' %}</span><h3>MP4, sẵn sàng để lưu</h3><p>Tải video đã xử lý về thiết bị. Nếu trình duyệt không hỗ trợ codec, bạn vẫn có thể tải tệp và mở bằng trình phát tương thích.</p><span class="format-display">.mp4<span>VIDEO OUTPUT</span></span></article>
+        </div>
+        <p class="feature-disclaimer">Hình và đồ họa minh họa quy trình. Kết quả giảm rung phụ thuộc vào video đầu vào.</p>
+    </section>
+
+    <section class="section container faq-layout" id="faq">
+        <div><span class="eyebrow">BẠN MUỐN BIẾT THÊM?</span><h2>Câu hỏi<br>thường gặp</h2><p>Một vài điều cần biết trước<br>khi bắt đầu xử lý.</p><a class="text-link" href="{% url 'workspace' %}#specifications">Xem đầu vào &amp; đầu ra {% include 'components/icon.html' with name='arrow' %}</a></div>
+        <div class="faq-list">
+            <details open><summary>Hệ thống ổn định video như thế nào?</summary><p>OpenCV ước lượng chuyển động giữa các khung hình. Quỹ đạo được làm mượt bằng bộ lọc Gaussian, sau đó từng khung hình được hiệu chỉnh và xử lý viền.</p></details>
+            <details><summary>Video có được xử lý ngay trong trình duyệt không?</summary><p>Không. Video được tải lên máy chủ Django để xử lý bằng Python và OpenCV. Video gốc và đầu ra được lưu trong thư mục media của dự án.</p></details>
+            <details><summary>Video đầu ra có giữ âm thanh không?</summary><p>Luồng xử lý hiện tại chỉ ghi các khung hình video, chưa giữ lại âm thanh của video gốc.</p></details>
+            <details><summary>Có thể loại bỏ hoàn toàn mọi rung lắc không?</summary><p>Không thể bảo đảm. Rung mạnh, nhòe chuyển động, thay đổi cảnh và vật thể chuyển động có thể ảnh hưởng đến kết quả. Bạn có thể xem video so sánh và số liệu sau khi xử lý.</p></details>
+            <details><summary>Tại sao video có thể bị cắt viền?</summary><p>Để hạn chế vùng trống khi hiệu chỉnh chuyển động, thuật toán tự cắt một phần viền và phóng lại về kích thước khung hình đầu vào.</p></details>
+            <details><summary>Nếu video kết quả không phát được thì sao?</summary><p>Bạn vẫn có thể tải MP4 và mở bằng trình phát tương thích. Khả năng phát trực tiếp phụ thuộc codec đầu ra và trình duyệt; máy chủ cần FFmpeg để mã hóa H.264.</p></details>
+        </div>
+    </section>
+
+    <section class="container cta-section"><div><span class="eyebrow">KHOẢNH KHẮC CỦA BẠN XỨNG ĐÁNG HƠN</span><h2>Hãy để video tiếp theo<br>của bạn vững vàng hơn.</h2><p>Bắt đầu từ chính video bạn đã quay.</p><a class="button button-primary" href="{% url 'workspace' %}">Bắt đầu ngay {% include 'components/icon.html' with name='arrow' %}</a></div><div class="cta-art" aria-hidden="true"><span class="cta-art-icon">{% include 'components/icon.html' with name='aperture' %}</span><div>CHUYỂN ĐỘNG <span>→</span> KHOẢNH KHẮC</div></div></section>
+</main>
+{% endblock %}

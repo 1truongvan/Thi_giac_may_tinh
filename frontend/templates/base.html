@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#070b14">
+    <meta name="description" content="Hệ thống ổn định video bằng thuật toán xử lý ảnh OpenCV. Tải video lên, xử lý và so sánh kết quả trước và sau.">
+    <title>{% block title %}Sửa Video Rung · Steady{% endblock %}</title>
+    <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    {% block styles %}{% endblock %}
+    <script src="{% static 'js/site.js' %}" defer></script>
+    {% block scripts %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    <a class="skip-link" href="#main-content">Đến nội dung chính</a>
+    {% block header %}{% include 'components/header.html' %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% block footer %}{% include 'components/footer.html' %}{% endblock %}
+</body>
+</html>

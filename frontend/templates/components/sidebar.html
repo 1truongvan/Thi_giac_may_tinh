@@ -1,0 +1,10 @@
+<aside class="workspace-sidebar" aria-label="Điều hướng Workspace">
+    <a class="sidebar-workspace" href="{% url 'workspace' %}">{% include 'components/icon.html' with name='spark' %} Workspace <span>VIDEO</span></a>
+    <span class="sidebar-label">CÔNG CỤ VIDEO</span>
+    <a class="sidebar-link active" href="{% url 'workspace' %}" aria-current="page">{% include 'components/icon.html' with name='aperture' %} Ổn định video</a>
+    <span class="sidebar-label sidebar-label-secondary">KHÁM PHÁ</span>
+    <a class="sidebar-link" href="#workspace-guide">{% include 'components/icon.html' with name='play' %} Hướng dẫn sử dụng</a>
+    <a class="sidebar-link" href="#specifications">{% include 'components/icon.html' with name='file' %} Đầu vào &amp; đầu ra</a>
+    <a class="sidebar-link" href="{% url 'home' %}#faq">{% include 'components/icon.html' with name='info' %} Câu hỏi thường gặp</a>
+    <div class="sidebar-bottom"><span class="sidebar-engine">{% include 'components/icon.html' with name='sliders' %}<span>ĐƯỢC XỬ LÝ BẰNG<strong>OpenCV Engine</strong></span></span><a href="{% url 'home' %}">← Về trang chủ</a></div>
+</aside>

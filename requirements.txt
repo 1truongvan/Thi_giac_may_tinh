@@ -1,0 +1,6 @@
+# Versions verified in the existing development environment; no upgrade required.
+Django==5.2.8
+opencv-python==4.12.0.88
+numpy==2.2.6
+scipy==1.16.2
+pandas==2.3.2

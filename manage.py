@@ -2,6 +2,16 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
+
+
+# Keep config/video module names stable after moving the source into backend.
+sys.path.insert(0, str(Path(__file__).resolve().parent / 'backend'))
+from pathlib import Path
+
+
+# Keep config/video module names stable after moving the source into backend.
+sys.path.insert(0, str(Path(__file__).resolve().parent / 'backend'))
 
 
 def main():

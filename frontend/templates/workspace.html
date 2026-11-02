@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Bộ ổn định video · Steady{% endblock %}
+{% block body_class %}workspace-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/workspace.css' %}">{% endblock %}
+{% block scripts %}<script src="{% static 'js/analysis.js' %}" defer></script><script src="{% static 'js/workspace.js' %}?v=result-recovery-1" defer></script>{% endblock %}
+{% block header %}{% include 'components/header.html' with workspace=True %}{% endblock %}
+{% block content %}
+{% include 'components/sidebar.html' %}
+<main id="main-content" class="workspace-main">
+    <section class="workspace-intro workspace-width">
+        <span class="eyebrow">KHÔNG GIAN SÁNG TẠO CỦA BẠN</span>
+        <h1>Bộ ổn định video</h1>
+        <div class="workspace-badges"><span>{% include 'components/icon.html' with name='video' %} Xử lý video</span><span>OpenCV</span><span>Tự động thích ứng</span></div>
+        <p>Giảm rung máy và làm mượt chuyển động. Tải video lên, xử lý bằng OpenCV<br class="desktop-break"> và so sánh kết quả ngay tại đây.</p>
+    </section>
+    <div class="workspace-width workspace-root" data-workspace-root data-job-id="{{ processing_report.job_id|default:pending_job|default:'' }}" data-state="{% if error_message %}error{% elif output_video %}complete{% elif pending_job %}waiting{% else %}empty{% endif %}">
+        <div class="workspace-status" role="status" aria-live="polite"><span class="status-dot"></span><span data-status-text>{% if output_video %}Xử lý hoàn tất · Kết quả của bạn đã sẵn sàng{% else %}Sẵn sàng khi bạn sẵn sàng{% endif %}</span></div>
+        <div class="workspace-error" role="alert" data-error{% if not error_message %} hidden{% endif %}>{% include 'components/icon.html' with name='info' %}<span data-error-message>{{ error_message|default:'' }}</span><button class="text-button" type="button" data-retry>Thử lại</button></div>
+        <form class="upload-form" data-upload-form method="post" action="{% url 'workspace' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="editor-grid">
+                <section class="editor-panel source-panel" aria-labelledby="source-title">
+                    <div class="panel-heading"><h2 id="source-title">{% include 'components/icon.html' with name='video' %} Video gốc</h2><span class="panel-tag" data-source-tag>{% if input_video %}Đã tải lên{% else %}Chưa chọn tệp{% endif %}</span></div>
+                    <div class="source-stage" data-dropzone>
+                        <input class="file-input" type="file" id="video-file" name="video" accept="video/*,.mp4,.mov,.avi,.mkv,.webm" required aria-label="Chọn video gốc" aria-describedby="upload-help">
+                        <div class="drop-placeholder" data-drop-placeholder{% if input_video %} hidden{% endif %}>
+                            <span class="upload-icon">{% include 'components/icon.html' with name='upload' %}</span>
+                            <h3>Thả video của bạn vào đây</h3><p>hoặc chọn một tệp từ thiết bị</p>
+                            <button class="button button-primary" type="button" data-choose-file>{% include 'components/icon.html' with name='upload' %} Chọn video</button>
+                            <span class="upload-hint" id="upload-help">Khả năng đọc tệp phụ thuộc codec OpenCV hỗ trợ</span>
+                        </div>
+                        <div class="source-preview" data-source-preview{% if not input_video %} hidden{% endif %}>
+                            {% if input_video %}{% include 'components/player.html' with player_id='source-player' video_url=input_video label='Video gốc' download=False %}{% endif %}
+                        </div>
+                        <div class="processing-overlay" data-processing hidden><span class="spinner"></span><h3>Đang xử lý video của bạn</h3><p>Đang tải lên và xử lý trên máy chủ.<br>Vui lòng giữ trang này mở.</p><span>Thời gian phụ thuộc dung lượng và nội dung video</span></div>
+                    </div>
+                    <div class="source-toolbar"><span data-file-info>{% if input_video %}Video gốc đã dùng để xử lý{% else %}Chưa có video nào được chọn{% endif %}</span><button type="button" class="text-button" data-choose-file>Chọn tệp khác</button></div>
+                    <p class="local-preview-note" data-local-preview-note hidden>Trình duyệt chưa phát được bản xem trước. Bạn vẫn có thể gửi tệp để OpenCV kiểm tra và xử lý.</p>
+                </section>
+                <aside class="editor-panel settings-panel" aria-labelledby="settings-title">
+                    <div class="panel-heading"><h2 id="settings-title">{% include 'components/icon.html' with name='sliders' %} Cấu hình xử lý</h2><span class="panel-tag">TỰ ĐỘNG</span></div>
+                    <div class="settings-content">
+                        <div class="setting-item"><span>Chế độ ổn định</span><div class="readonly-field">Tự động thích ứng {% include 'components/icon.html' with name='spark' %}</div><p>Mức làm mượt được chọn theo chuyển động trong video.</p></div>
+                        <div class="setting-item"><span>Xử lý viền</span><div class="readonly-field">Cắt viền &amp; phóng lại {% include 'components/icon.html' with name='check' %}</div><p>Tỷ lệ cắt được thuật toán tự điều chỉnh.</p></div>
+                        <div class="output-format"><span>Định dạng đầu ra</span><strong>MP4</strong></div>
+                        <div class="settings-notice">{% include 'components/icon.html' with name='info' %}<p>Video được xử lý trên máy chủ. Phiên bản hiện tại chưa giữ âm thanh.</p></div>
+                        <button class="button button-primary stabilize-button" type="submit" data-submit>{% include 'components/icon.html' with name='spark' %}<span>Ổn định video</span></button>
+                        <span class="submit-caption">Giữ nguyên video gốc trong dữ liệu dự án</span>
+                    </div>
+                </aside>
+            </div>
+            <noscript><p class="noscript-note">Bạn có thể dùng ô chọn tệp và nút “Ổn định video” để gửi biểu mẫu. Trạng thái đang xử lý cần JavaScript; kết quả sẽ xuất hiện sau khi trang tải lại.</p></noscript>
+        </form>
+        {% if output_video %}{% include 'components/result.html' %}{% endif %}
+    </div>
+    <section class="workspace-width workspace-section" id="workspace-guide">
+        <div class="section-heading"><span class="eyebrow">TỪ TỆP GỐC ĐẾN KẾT QUẢ</span><h2>Cách hoạt động</h2><p>Ba bước để làm mượt những chuyển động của bạn.</p></div>
+        <div class="workspace-steps"><article><span class="guide-icon">{% include 'components/icon.html' with name='upload' %}<b>1</b></span><h3>Chọn tệp của bạn</h3><p>Kéo thả video hoặc chọn một tệp có sẵn trên thiết bị.</p></article><article><span class="guide-icon">{% include 'components/icon.html' with name='sliders' %}<b>2</b></span><h3>Bắt đầu ổn định</h3><p>Thuật toán tự chọn mức làm mượt phù hợp với chuyển động.</p></article><article><span class="guide-icon">{% include 'components/icon.html' with name='download' %}<b>3</b></span><h3>Xem trước &amp; tải xuống</h3><p>So sánh video và số liệu thực tế, sau đó tải bản MP4.</p></article></div>
+    </section>
+    <section class="workspace-width workspace-section">
+        <div class="section-heading"><h2>Mọi thứ bạn cần</h2><p>Hiểu rõ cách xử lý trước khi bắt đầu.</p></div>
+        <div class="workspace-features"><article><span class="feature-icon">{% include 'components/icon.html' with name='aperture' %}</span><h3>Làm mượt đường đi camera</h3><p>Ước lượng chuyển động giữa các khung hình và làm mượt quỹ đạo.</p></article><article><span class="feature-icon">{% include 'components/icon.html' with name='chart' %}</span><h3>So sánh bằng số liệu thật</h3><p>Xem độ rung trung bình và độ lệch chuẩn trước và sau khi xử lý.</p></article><article><span class="feature-icon">{% include 'components/icon.html' with name='file' %}</span><h3>Giữ tệp gốc để đối chiếu</h3><p>Video đầu vào và kết quả được lưu riêng trong dữ liệu dự án.</p></article></div>
+    </section>
+    <section class="workspace-width workspace-section specifications" id="specifications">
+        <div class="section-heading"><h2>Đầu vào, đầu ra và giới hạn</h2><p>Thông tin thực tế về hệ thống đang sử dụng.</p></div>
+        <dl class="spec-table"><div><dt>Video đầu vào</dt><dd>Chọn tệp video từ thiết bị. Định dạng và codec phải được bản OpenCV trên máy chủ hỗ trợ.</dd></div><div><dt>Kết quả đầu ra</dt><dd>MP4 H.264, yuv420p và faststart. Cần FFmpeg/FFprobe; hệ thống kiểm tra video đầu ra trước khi báo hoàn thành.</dd></div><div><dt>Xử lý và lưu trữ</dt><dd>Video được tải lên máy chủ Django. Tệp gốc và kết quả được lưu trong media/input và media/output.</dd></div><div><dt>Âm thanh</dt><dd>Chưa giữ âm thanh trong luồng xử lý hiện tại.</dd></div><div><dt>Thời gian xử lý</dt><dd>Phụ thuộc số khung hình, độ phân giải và tài nguyên máy chủ. Hệ thống chưa cung cấp phần trăm tiến trình.</dd></div><div><dt>Khả năng ổn định</dt><dd>Không bảo đảm loại bỏ mọi rung lắc. Nhòe, rung mạnh hoặc nhiều vật thể chuyển động có thể làm giảm hiệu quả.</dd></div><div><dt>Khung hình</dt><dd>Thuật toán tự cắt một phần viền và phóng lại về kích thước đầu vào. FPS có thể được đưa về 30 nếu FPS nguồn không hợp lệ hoặc lớn hơn 60.</dd></div></dl>
+    </section>
+    <section class="workspace-width workspace-section workspace-faq">
+        <div class="section-heading"><h2>Câu hỏi thường gặp</h2><p>Một vài lưu ý để quá trình xử lý thuận tiện hơn.</p></div>
+        <div class="faq-list"><details><summary>Tôi có thể điều chỉnh cường độ ổn định không?</summary><p>Hiện tại thuật toán tự chọn mức làm mượt và tỷ lệ cắt viền. Hệ thống chưa có tham số điều chỉnh thủ công.</p></details><details><summary>Vì sao xử lý video có thể mất thời gian?</summary><p>Máy chủ cần đo chuyển động của video gốc, ổn định từng khung hình, đo lại và tạo video so sánh. Tệp dài hoặc độ phân giải lớn sẽ cần nhiều tài nguyên hơn.</p></details><details><summary>Tôi nên làm gì nếu xử lý thất bại?</summary><p>Kiểm tra tệp có mở được trên thiết bị, thử lại hoặc chọn video khác. Lỗi xử lý cũng có thể liên quan đến codec hay tài nguyên máy chủ.</p></details><details><summary>Tại sao không xem được video kết quả?</summary><p>Trình duyệt có thể không hỗ trợ codec MP4 đang được sử dụng. Hãy tải tệp và mở bằng trình phát tương thích. Mã hóa H.264 cần FFmpeg trên máy chủ.</p></details><details><summary>Video đầu ra có thể kém ổn định hơn không?</summary><p>Có. Hiệu quả phụ thuộc nội dung và chuyển động. Mức thay đổi độ lệch chuẩn có thể âm; hệ thống hiển thị kết quả đo thực tế.</p></details></div>
+    </section>
+    {% include 'components/footer.html' %}
+</main>
+{% endblock %}
+{% block footer %}{% endblock %}

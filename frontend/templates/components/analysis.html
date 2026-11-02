@@ -1,0 +1,37 @@
+{% if processing_report %}
+<section class="analysis-panel editor-panel" aria-labelledby="analysis-title" data-analysis>
+    <div class="panel-heading">
+        <h2 id="analysis-title">{% include 'components/icon.html' with name='chart' %} Phân tích chuyển động thực tế</h2>
+        <a class="text-link analysis-download" href="{{ analysis_url }}" download>Tải JSON {% include 'components/icon.html' with name='download' %}</a>
+    </div>
+    <div class="analysis-body">
+        <div class="analysis-metadata">
+            <div><span>THỜI GIAN MÁY CHỦ</span><strong>{{ processing_report.timings.total_processing_seconds|floatformat:2 }} <small>giây</small></strong></div>
+            <div><span>VIDEO ĐẦU RA</span><strong>H.264 <small>· yuv420p</small></strong></div>
+            <div><span>KÍCH THƯỚC / FPS</span><strong>{{ processing_report.output.width }} × {{ processing_report.output.height }} <small>· {{ processing_report.output.fps|floatformat:2 }} fps</small></strong></div>
+            <div><span>KHUNG HÌNH</span><strong>{{ processing_report.output.frame_count }} <small>frame</small></strong></div>
+        </div>
+        <p class="analysis-explanation">Chuyển động ảnh đo bằng Optical Flow trên video gốc và video kết quả. Đây là chuyển động trung bình giữa các frame, có thể bao gồm chuyển động vật thể và lia máy; không phải thước đo riêng biệt cho rung camera hay chất lượng tổng thể.</p>
+        <div class="chart-legend"><span><i class="legend-before"></i> Video gốc</span><span><i class="legend-after"></i> Video kết quả</span><span>Đơn vị: pixel/frame</span></div>
+        {{ chart_data|json_script:'motion-analysis' }}
+        <div class="motion-chart"><h3>Độ lớn chuyển động theo frame</h3><canvas data-motion-chart="magnitude" role="img" aria-label="Biểu đồ độ lớn chuyển động thực tế trước và sau theo frame"></canvas><p class="chart-readout" aria-live="polite">Di chuyển chuột hoặc chạm vào biểu đồ để xem số liệu.</p></div>
+        <div class="xy-charts">
+            <div class="motion-chart"><h3>Dịch chuyển X giữa các frame</h3><canvas data-motion-chart="dx" role="img" aria-label="Biểu đồ dịch chuyển theo trục X trước và sau"></canvas><p class="chart-readout" aria-live="polite">Trục X · pixel/frame</p></div>
+            <div class="motion-chart"><h3>Dịch chuyển Y giữa các frame</h3><canvas data-motion-chart="dy" role="img" aria-label="Biểu đồ dịch chuyển theo trục Y trước và sau"></canvas><p class="chart-readout" aria-live="polite">Trục Y · pixel/frame</p></div>
+        </div>
+        <p class="analysis-footnote">Có {{ chart_data.sample_count }} mẫu chuyển động cho mỗi video. Biểu đồ chọn tối đa 1.500 mẫu thực; tệp JSON lưu đầy đủ. Thời gian máy chủ không bao gồm truyền tệp qua mạng và dựng trang kết quả.</p>
+        <details class="timing-details"><summary>Chi tiết thời gian xử lý</summary><dl>
+            <div><dt>Kiểm tra công cụ</dt><dd>{{ processing_report.timings.tools_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Lưu video tải lên</dt><dd>{{ processing_report.timings.save_upload_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Kiểm tra video gốc</dt><dd>{{ processing_report.timings.input_validation_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Phân tích trước</dt><dd>{{ processing_report.timings.before_analysis_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Ổn định &amp; mã hóa H.264</dt><dd>{{ processing_report.timings.stabilize_and_encode_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Kiểm tra đầu ra</dt><dd>{{ processing_report.timings.output_validation_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Phân tích sau</dt><dd>{{ processing_report.timings.after_analysis_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Tạo &amp; mã hóa bản so sánh</dt><dd>{{ processing_report.timings.comparison_and_encode_seconds|floatformat:3 }} s</dd></div>
+            <div><dt>Kiểm tra bản so sánh</dt><dd>{{ processing_report.timings.comparison_validation_seconds|floatformat:3 }} s</dd></div>
+        </dl></details>
+        <noscript><p class="analysis-footnote">Biểu đồ cần JavaScript. Bạn vẫn có thể xem bảng Mean/Std và tải JSON đầy đủ.</p></noscript>
+    </div>
+</section>
+{% endif %}

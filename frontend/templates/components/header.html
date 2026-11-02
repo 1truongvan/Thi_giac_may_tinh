@@ -1,0 +1,17 @@
+<header class="site-header{% if workspace %} workspace-header{% endif %}">
+    <div class="header-inner">
+        <a class="brand" href="{% url 'home' %}" aria-label="Steady — Trang chủ">
+            <span class="brand-mark">{% include 'components/icon.html' with name='aperture' %}</span>
+            <span>steady<span class="brand-dot">.</span></span>
+        </a>
+        <span class="header-divider"></span><span class="header-caption">VIDEO STABILIZATION</span>
+        <button class="icon-button nav-toggle" type="button" aria-label="Mở menu" aria-expanded="false" aria-controls="main-navigation">{% include 'components/icon.html' with name='menu' %}</button>
+        <nav id="main-navigation" class="main-navigation" aria-label="Điều hướng chính">
+            <a href="{% url 'home' %}"{% if not workspace %} aria-current="page"{% endif %}>Trang chủ</a>
+            <a href="{% url 'home' %}#how-it-works">Cách hoạt động</a>
+            <a href="{% url 'home' %}#features">Tính năng</a>
+            <a href="{% url 'home' %}#faq">Hỏi đáp</a>
+        </nav>
+        {% if workspace %}<span class="header-status"><span class="status-dot"></span> OpenCV · Python</span>{% else %}<a class="button button-small button-outline header-cta" href="{% url 'workspace' %}">Mở Workspace {% include 'components/icon.html' with name='arrow' %}</a>{% endif %}
+    </div>
+</header>
